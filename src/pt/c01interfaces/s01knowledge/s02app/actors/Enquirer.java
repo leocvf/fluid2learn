@@ -1,6 +1,7 @@
 package pt.c01interfaces.s01knowledge.s02app.actors;
 
 import pt.c01interfaces.s01knowledge.s01base.impl.BaseConhecimento;
+import pt.c01interfaces.s01knowledge.s01base.impl.Declaracao;
 import pt.c01interfaces.s01knowledge.s01base.inter.IBaseConhecimento;
 import pt.c01interfaces.s01knowledge.s01base.inter.IDeclaracao;
 import pt.c01interfaces.s01knowledge.s01base.inter.IEnquirer;
@@ -8,29 +9,67 @@ import pt.c01interfaces.s01knowledge.s01base.inter.IObjetoConhecimento;
 import pt.c01interfaces.s01knowledge.s01base.inter.IResponder;
 
 public class Enquirer implements IEnquirer
-{
-    IObjetoConhecimento obj;
-	
+{	
+	private static IBaseConhecimento bc = new BaseConhecimento();
+	private static String[] animals = bc.listaNomes();
+    IObjetoConhecimento[] obj = new IObjetoConhecimento[animals.length];
+    
 	public Enquirer()
 	{
-        IBaseConhecimento bc = new BaseConhecimento();
 		
-		obj = bc.recuperaObjeto("tiranossauro");
+		for(int i = 0; i < animals.length;i++)//funcao responsavel por alocar o vetor de animais
+		{
+			obj[i] = bc.recuperaObjeto(animals[i]);
+		}
+		
 	}
 	
 	
 	@Override
 	public void connect(IResponder responder)
 	{
-		IDeclaracao decl = obj.primeira();
-		
-		while (decl != null && responder.ask(decl.getPropriedade()).equalsIgnoreCase(decl.getValor()))
-			decl = obj.proxima();
-		
+		boolean flag, flag2;
+		IDeclaracao[] decl = new Declaracao[40];
+		IDeclaracao declaux;
+		int k = 0;
+		int i = 0;
+		declaux = obj[i].primeira();
+		for(i = 0; i < animals.length && declaux != null; i++)//percorre cada animal
+		 {
+		 	flag = true;
+				for(declaux = obj[i].primeira(); declaux != null && flag;  declaux = obj[i].proxima())
+				{
+					flag2 = true;
+					for(int j = 0; j < k && flag && flag2; j++)
+					{
+						if(declaux.getPropriedade().equalsIgnoreCase(decl[j].getPropriedade()))
+						{
+							flag2 = false;
+							if(!declaux.getValor().equalsIgnoreCase(decl[j].getValor()))
+							{
+								flag = false;
+								
+							}
+	
+						}
+					}
+					if(flag2)
+					{
+						decl[k] = new Declaracao(declaux.getPropriedade(), responder.ask(declaux.getPropriedade()));
+						if(!declaux.getValor().equalsIgnoreCase(decl[k].getValor()))
+						{
+							
+							flag = false;
+						}
+						k++;
+						
+					}
+				}
+		}
 		boolean acertei = false;
 		
-		if (decl == null)
-			acertei = responder.finalAnswer("tiranossauro");
+		if (declaux == null)
+			acertei = responder.finalAnswer(animals [i - 1]);
 		else
 			acertei = responder.finalAnswer("nao conheco");
 		
@@ -40,5 +79,12 @@ public class Enquirer implements IEnquirer
 			System.out.println("fuem! fuem! fuem!");
 
 	}
+
+
+	private IDeclaracao IDeclaracao(String propriedade, String ask) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 }
