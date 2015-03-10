@@ -17,18 +17,22 @@ public class Enquirer implements IEnquirer
     
 	public Enquirer()
 	{
+<<<<<<< HEAD
 		
 		for(int i = 0; i < animals.length;i++)//funcao responsavel por alocar o vetor de animais
 		{
 			obj[i] = bc.recuperaObjeto(animals[i]);
 		}
 		
+=======
+>>>>>>> santanche/master
 	}
 	
 	
 	@Override
 	public void connect(IResponder responder)
 	{
+<<<<<<< HEAD
 		boolean flag, flag2;
 		/* Criamos um vetor de declaracoes para armazenar as perguntas feitas e suas respostas */
 		IDeclaracao[] decl = new Declaracao[40];
@@ -80,6 +84,27 @@ public class Enquirer implements IEnquirer
 			acertei = responder.finalAnswer(animals [i - 1]);
 		else
 			acertei = responder.finalAnswer("nao conheco");
+=======
+        IBaseConhecimento bc = new BaseConhecimento();
+		
+		obj = bc.recuperaObjeto("tiranossauro");
+
+		IDeclaracao decl = obj.primeira();
+		
+        boolean animalEsperado = true;
+		while (decl != null && animalEsperado) {
+			String pergunta = decl.getPropriedade();
+			String respostaEsperada = decl.getValor();
+			
+			String resposta = responder.ask(pergunta);
+			if (resposta.equalsIgnoreCase(respostaEsperada))
+				decl = obj.proxima();
+			else
+				animalEsperado = false;
+		}
+		
+		boolean acertei = responder.finalAnswer("tiranossauro");
+>>>>>>> santanche/master
 		
 		if (acertei)
 			System.out.println("Oba! Acertei!");
