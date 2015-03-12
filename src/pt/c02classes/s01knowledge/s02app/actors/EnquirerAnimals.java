@@ -1,5 +1,7 @@
 package pt.c02classes.s01knowledge.s02app.actors;
-
+import java.util.HashMap;
+import java.util.Map;
+import pt.c01interfaces.s01knowledge.s01base.impl.Declaracao;
 import pt.c02classes.s01knowledge.s01base.impl.BaseConhecimento;
 import pt.c02classes.s01knowledge.s01base.inter.IBaseConhecimento;
 import pt.c02classes.s01knowledge.s01base.inter.IDeclaracao;
@@ -8,7 +10,10 @@ import pt.c02classes.s01knowledge.s01base.inter.IObjetoConhecimento;
 import pt.c02classes.s01knowledge.s01base.inter.IResponder;
 
 public class EnquirerAnimals implements IEnquirer {
-
+	private static IBaseConhecimento bc = new BaseConhecimento();
+	/* Criamos um vetor de Strings com os nomes dos animais */
+	private static String[] animals = bc.listaNomes();
+    IObjetoConhecimento[] obj = new IObjetoConhecimento[animals.length];
 	IResponder responder;
 	
 	public void connect(IResponder responder) {
@@ -16,34 +21,63 @@ public class EnquirerAnimals implements IEnquirer {
 	}
 	
 	public boolean discover() {
-        IBaseConhecimento bc = new BaseConhecimento();
-        IObjetoConhecimento obj;
 		
-		bc.setScenario("animals");
-        obj = bc.recuperaObjeto("tiranossauro");
-
-		IDeclaracao decl = obj.primeira();
+			for(int i = 0; i < animals.length;i++)//funcao responsavel por alocar o vetor de animais
+			{
+				obj[i] = bc.recuperaObjeto(animals[i]);
+			}
+			boolean flag, flag2;
+			/* Criamos um vetor de declaracoes para armazenar as perguntas feitas e suas respostas */
+			Map<String,String> declaracoes = new HashMap<String,String>();
+			/* Variavel auxiliar de declaracoes */
+			IDeclaracao declaux;
+			int i = 0;
+			declaux = obj[i].primeira();
+			for(i = 0; i < animals.length && declaux != null; i++)//percorre cada animal perguntando
+			 {
+			 	flag = true;
+			 	/* Perecorre cada pergunta ate a resposta for diferente da esperada */
+				for(declaux = obj[i].primeira(); declaux != null && flag;  declaux = obj[i].proxima())
+				{
+					flag2 = true;
+					/* Olha se ja perguntou para nao repetir */
+					if(declaracoes.containsKey( declaux.getPropriedade()))
+					{
+						flag2 = false;
+						/* Se for reposta diferente */
+						if(!declaux.getValor().equalsIgnoreCase(decl[j].getValor()))
+						{
+							flag = false;
+									
+						}
 		
-        boolean animalEsperado = true;
-		while (decl != null && animalEsperado) {
-			String pergunta = decl.getPropriedade();
-			String respostaEsperada = decl.getValor();
+						
+					}
+					if(flag2)
+					{
+						/* Poe uma nova pergunta ao vetor das repetidas*/
+						decl[k] = new Declaracao(declaux.getPropriedade(), responder.ask(declaux.getPropriedade()));
+						if(!declaux.getValor().equalsIgnoreCase(decl[k].getValor()))
+						{
+								
+							flag = false;
+						}							
+					}
+				}
+			}
+			boolean acertei = false;
 			
-			String resposta = responder.ask(pergunta);
-			if (resposta.equalsIgnoreCase(respostaEsperada))
-				decl = obj.proxima();
+			if (declaux == null)
+				acertei = responder.finalAnswer(animals [i - 1]);
 			else
-				animalEsperado = false;
-		}
-		
-		boolean acertei = responder.finalAnswer("tiranossauro");
-		
-		if (acertei)
-			System.out.println("Oba! Acertei!");
-		else
-			System.out.println("fuem! fuem! fuem!");
-		
-		return acertei;
-	}
+				acertei = responder.finalAnswer("nao conheco");
+			
+			if (acertei)
+				System.out.println("Oba! Acertei!");
+			else
+				System.out.println("fuem! fuem! fuem!");
 
+		
+	return acertei;
+	}
 }
