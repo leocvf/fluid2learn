@@ -1,4 +1,6 @@
 package pt.c01interfaces.s01knowledge.s02app.actors;
+import java.util.HashMap;
+import java.util.Map;
 
 import pt.c01interfaces.s01knowledge.s01base.impl.BaseConhecimento;
 import pt.c01interfaces.s01knowledge.s01base.impl.Declaracao;
@@ -32,10 +34,9 @@ public class Enquirer implements IEnquirer
 	{
 		boolean flag, flag2;
 		/* Criamos um vetor de declaracoes para armazenar as perguntas feitas e suas respostas */
-		IDeclaracao[] decl = new Declaracao[40];
+		Map<String,String> declaracoes = new HashMap<String,String>();
 		/* Variavel auxiliar de declaracoes */
 		IDeclaracao declaux;
-		int k = 0;
 		int i = 0;
 		declaux = obj[i].primeira();
 		for(i = 0; i < animals.length && declaux != null; i++)//percorre cada animal perguntando
@@ -46,32 +47,27 @@ public class Enquirer implements IEnquirer
 			{
 				flag2 = true;
 				/* Olha se ja perguntou para nao repetir */
-				for(int j = 0; j < k && flag && flag2; j++)
+				if(declaracoes.containsKey( declaux.getPropriedade()))
 				{
-					/* Se for a mesma pergunta */
-					if(declaux.getPropriedade().equalsIgnoreCase(decl[j].getPropriedade()))
+					flag2 = false;
+					/* Se for reposta diferente */
+					if(!declaux.getValor().equalsIgnoreCase(declaracoes.get(declaux.getPropriedade())))
 					{
-						flag2 = false;
-						/* Se for reposta diferente */
-						if(!declaux.getValor().equalsIgnoreCase(decl[j].getValor()))
-						{
-							flag = false;
+						flag = false;
 								
-						}
-	
 					}
+	
+					
 				}
 				if(flag2)
 				{
 					/* Poe uma nova pergunta ao vetor das repetidas*/
-					decl[k] = new Declaracao(declaux.getPropriedade(), responder.ask(declaux.getPropriedade()));
-					if(!declaux.getValor().equalsIgnoreCase(decl[k].getValor()))
+					declaracoes.put(declaux.getPropriedade(), new String( responder.ask(declaux.getPropriedade())));
+					if(!declaux.getValor().equalsIgnoreCase(declaracoes.get(declaux.getPropriedade())))
 					{
 							
 						flag = false;
-					}
-					k++;
-						
+					}							
 				}
 			}
 		}
@@ -88,12 +84,4 @@ public class Enquirer implements IEnquirer
 			System.out.println("fuem! fuem! fuem!");
 
 	}
-
-
-	private IDeclaracao IDeclaracao(String propriedade, String ask) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-
 }

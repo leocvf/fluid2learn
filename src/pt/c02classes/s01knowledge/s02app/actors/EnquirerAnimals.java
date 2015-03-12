@@ -45,7 +45,7 @@ public class EnquirerAnimals implements IEnquirer {
 					{
 						flag2 = false;
 						/* Se for reposta diferente */
-						if(!declaux.getValor().equalsIgnoreCase(decl[j].getValor()))
+						if(!declaux.getValor().equalsIgnoreCase(declaracoes.get(declaux.getPropriedade())))
 						{
 							flag = false;
 									
@@ -56,8 +56,8 @@ public class EnquirerAnimals implements IEnquirer {
 					if(flag2)
 					{
 						/* Poe uma nova pergunta ao vetor das repetidas*/
-						decl[k] = new Declaracao(declaux.getPropriedade(), responder.ask(declaux.getPropriedade()));
-						if(!declaux.getValor().equalsIgnoreCase(decl[k].getValor()))
+						declaracoes.put(declaux.getPropriedade(), new String( responder.ask(declaux.getPropriedade())));
+						if(!declaux.getValor().equalsIgnoreCase(declaracoes.get(declaux.getPropriedade())))
 						{
 								
 							flag = false;
