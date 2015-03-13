@@ -3,7 +3,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pt.c01interfaces.s01knowledge.s01base.impl.BaseConhecimento;
-import pt.c01interfaces.s01knowledge.s01base.impl.Declaracao;
 import pt.c01interfaces.s01knowledge.s01base.inter.IBaseConhecimento;
 import pt.c01interfaces.s01knowledge.s01base.inter.IDeclaracao;
 import pt.c01interfaces.s01knowledge.s01base.inter.IEnquirer;

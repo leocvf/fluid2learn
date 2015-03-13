@@ -11,7 +11,7 @@ import pt.c02classes.s01knowledge.s02app.actors.ResponderAnimals;
 
 public class Orchestrator
 {
-	public static void main(String[] args)
+	public static void New()
 	{
 		IEnquirer enq;
 		IResponder resp;
