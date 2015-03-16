@@ -1,7 +1,6 @@
 package pt.c02classes.s01knowledge.s02app.actors;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import pt.c02classes.s01knowledge.s01base.inter.IEnquirer;
 import pt.c02classes.s01knowledge.s01base.inter.IResponder;
@@ -80,73 +79,134 @@ public class EnquirerMaze implements IEnquirer {
 		/* Guarda se houve movimento na rodada */
 		boolean mudou = false;
 		
+		/* Ve se encontrou a saÌda */
+		if(responder.ask("aqui").equals("saida")) {
+			System.out.println("Voce encontrou a saida!");
+			achou = true;
+			return achou;
+		}		
 		
 		while(!achou) {
 			
-			mudou = false;
+			mudou = false;	
+			String naoIr = new String();
+			naoIr = "a";
 			
 			
-			/* Ve se encontrou a saÌda */
-			if(responder.ask("aqui").equals("saida")) {
-				System.out.println("VocÍ encontrou a saida!");
-				achou = true;
-				return achou;
-			}			
 						
 			/* Ver se da pra ir a direita */
-			if(responder.ask("leste").equals(" ")) {
-				responder.move("leste");
-				if(coordenada.testa(sequencia))
-					responder.move("oeste");
-				else {
+			if(!naoIr.equals("leste")) {
+				if(responder.ask("leste").equals("passagem") || responder.ask("leste").equals("saida")) {
 					coordenada.move("leste");
-					sequencia.add("leste");
-					mudou = true;
+					responder.move("leste");
+					if(coordenada.testa(sequencia)) {
+						responder.move("oeste");
+						coordenada.move("oeste");
+					}
+					else {					
+						sequencia.add("leste");
+						mudou = true;
+						System.out.println("leste");
+					}
 				}
 			}
 			
-			if(!mudou)			
+			
+			
+			
+			if(!mudou)	
 			/* Ver se da pra ir pra cima */
-				if(responder.ask("norte").equals(" ")) {
-					responder.move("norte");
-					if(coordenada.testa(sequencia))
-						responder.move("sul");
-					else {
+				if(!naoIr.equals("norte")) {
+					if(responder.ask("norte").equals("passagem") || responder.ask("norte").equals("saida")) {					
+						responder.move("norte");
 						coordenada.move("norte");
-						sequencia.add("norte");
-						mudou = true;
+						if(coordenada.testa(sequencia)) {
+							responder.move("sul");
+							coordenada.move("sul");	
+						}
+						else {						
+							sequencia.add("norte");
+							mudou = true;
+							System.out.println("norte");
+						}
 					}
 				}
+			
+			
 			if(!mudou)			
 				/* Ver se da pra ir pra esquerda */
-				if(responder.ask("oeste").equals(" ")) {
-					responder.move("oeste");
-					if(coordenada.testa(sequencia))
-						responder.move("leste");
-					else {
-						coordenada.move("oeste");
-						sequencia.add("oeste");
-						mudou = true;
+				if(!naoIr.equals("oeste")) {
+					if(responder.ask("oeste").equals("passagem") || responder.ask("oeste").equals("saida")) {
+						responder.move("oeste");
+						if(coordenada.testa(sequencia)) {
+							responder.move("leste");
+							coordenada.move("leste");
+						}
+						else {						
+							sequencia.add("oeste");
+							mudou = true;
+							System.out.println("oeste");
+						}
 					}
 				}
+			
+			
 			
 			if(!mudou)			
 				/* Ver se da pra ir pra baixo */
-				if(responder.ask("sul").equals(" ")) {
-					responder.move("sul");
-					if(coordenada.testa(sequencia))
-						responder.move("norte");
-					else {
-						coordenada.move("sul");
-						sequencia.add("sul");
-						mudou = true;
+				if(!naoIr.equals("norte")) {
+					if(responder.ask("sul").equals("passagem") || responder.ask("sul").equals("saida")) {
+						responder.move("sul");
+						if(coordenada.testa(sequencia)) {
+							responder.move("norte");
+							coordenada.move("norte");
+						}
+						else {						
+							sequencia.add("sul");
+							mudou = true;
+							System.out.println("sul");
+						}
 					}
 				}
+			
+			/* Ve se encontrou a saÌda */
+			if(responder.ask("aqui").equals("saida")) {
+				System.out.println("Voce encontrou a saida!");
+				achou = true;
+				return achou;
+			}				
+			
+			if(!mudou) {				
 				
-			if(!mudou) {
+				naoIr = sequencia.get(sequencia.size() - 1);
+				
+				if(naoIr.equals("norte")) {
+					coordenada.move("sul");
+					responder.move("sul");					
+				}
+				
+				if(naoIr.equals("leste")) {
+					coordenada.move("oeste");
+					responder.move("oeste");					
+				}
+				
+				if(naoIr.equals("sul")) {
+					coordenada.move("norte");
+					responder.move("norte");					
+				}
+				
+				if(naoIr.equals("oeste")) {
+					coordenada.move("leste");
+					responder.move("leste");					
+				}					
+			}			
+			
+			/* Se voltou para a entrada */
+			if(responder.ask("aqui").equals("entrada")) {
 				System.out.println("FuÈm fuÈm fuÈm!");
-				return true;				
+				return true;			
 			}
+			System.out.println(naoIr);
 		
 		}	
 		

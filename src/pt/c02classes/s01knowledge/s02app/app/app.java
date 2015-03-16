@@ -17,11 +17,8 @@ public class app {
 			      case "A": Orchestrator.New();
 			                break;
 			      case "M": OrchestratorInteractive.New();
-			      			tipo = "M";
 			                break;
 			   }
-				if(tipo.equalsIgnoreCase("M"))
-					break;
 				System.out.print("(A)nimals, (M)aze ou (F)im? ");
 				tipo = scanner.nextLine();
 			}
