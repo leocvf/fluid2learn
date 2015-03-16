@@ -214,8 +214,65 @@ public class EnquirerMaze implements IEnquirer {
 			
 			/* Se voltou para a entrada */
 			if(responder.ask("aqui").equals("entrada")) {
-				System.out.println("FuÈm fuÈm fuÈm!");
-				return true;			
+				
+				
+				
+				if(responder.ask("sul").equals("passagem") || responder.ask("sul").equals("saida")) {
+					responder.move("sul");
+					coordenada.move("sul");
+					if(coordenada.testa(sequencia)) {
+						responder.move("norte");
+						coordenada.move("norte");
+					}
+					else {						
+						sequencia.add("sul");
+						mudou = true;
+						
+						
+					}
+					
+				}
+				
+				if(!mudou)
+					if(responder.ask("oeste").equals("passagem") || responder.ask("oeste").equals("saida")) {
+						responder.move("oeste");
+						coordenada.move("oeste");
+						if(coordenada.testa(sequencia)) {
+							responder.move("leste");
+							coordenada.move("leste");
+						}
+						else {						
+							sequencia.add("oeste");
+							mudou = true;
+							
+							
+						}
+					}
+					
+				if(!mudou)
+						if(responder.ask("norte").equals("passagem") || responder.ask("norte").equals("saida")) {					
+							responder.move("norte");
+							coordenada.move("norte");
+							if(coordenada.testa(sequencia)) {
+								responder.move("sul");
+								coordenada.move("sul");	
+							}
+							else {						
+								sequencia.add("norte");
+								mudou = true;
+								
+							}
+						}
+							
+				if(!mudou) {
+					System.out.println("FuÈm fuÈm fuÈm!");
+					return true;
+							
+				}
+									
+						
+					
+						
 			}
 			
 			
