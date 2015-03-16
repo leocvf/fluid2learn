@@ -70,6 +70,8 @@ public class EnquirerMaze implements IEnquirer {
 		
 		ArrayList<String> sequencia = new ArrayList<String>();
 		
+		//ArrayList<Coordenada> naoIr = new ArrayList<Coordenada>();
+		
 		Coordenada coordenada = new Coordenada();
 		
 		
@@ -86,37 +88,37 @@ public class EnquirerMaze implements IEnquirer {
 			return achou;
 		}		
 		
+		int voltas = 0;
+		
 		while(!achou) {
 			
-			mudou = false;	
-			String naoIr = new String();
-			naoIr = "a";
-			
-			
+			mudou = false;
 						
 			/* Ver se da pra ir a direita */
-			if(!naoIr.equals("leste")) {
+		
 				if(responder.ask("leste").equals("passagem") || responder.ask("leste").equals("saida")) {
+					
 					coordenada.move("leste");
 					responder.move("leste");
 					if(coordenada.testa(sequencia)) {
 						responder.move("oeste");
 						coordenada.move("oeste");
+						
 					}
 					else {					
 						sequencia.add("leste");
 						mudou = true;
-						System.out.println("leste");
+						
 					}
 				}
-			}
+			
 			
 			
 			
 			
 			if(!mudou)	
 			/* Ver se da pra ir pra cima */
-				if(!naoIr.equals("norte")) {
+				
 					if(responder.ask("norte").equals("passagem") || responder.ask("norte").equals("saida")) {					
 						responder.move("norte");
 						coordenada.move("norte");
@@ -127,17 +129,18 @@ public class EnquirerMaze implements IEnquirer {
 						else {						
 							sequencia.add("norte");
 							mudou = true;
-							System.out.println("norte");
+							
 						}
-					}
+					
 				}
 			
 			
 			if(!mudou)			
 				/* Ver se da pra ir pra esquerda */
-				if(!naoIr.equals("oeste")) {
+				
 					if(responder.ask("oeste").equals("passagem") || responder.ask("oeste").equals("saida")) {
 						responder.move("oeste");
+						coordenada.move("oeste");
 						if(coordenada.testa(sequencia)) {
 							responder.move("leste");
 							coordenada.move("leste");
@@ -145,18 +148,19 @@ public class EnquirerMaze implements IEnquirer {
 						else {						
 							sequencia.add("oeste");
 							mudou = true;
-							System.out.println("oeste");
+							
 						}
-					}
+					
 				}
 			
 			
 			
 			if(!mudou)			
 				/* Ver se da pra ir pra baixo */
-				if(!naoIr.equals("norte")) {
+				
 					if(responder.ask("sul").equals("passagem") || responder.ask("sul").equals("saida")) {
 						responder.move("sul");
+						coordenada.move("sul");
 						if(coordenada.testa(sequencia)) {
 							responder.move("norte");
 							coordenada.move("norte");
@@ -164,9 +168,9 @@ public class EnquirerMaze implements IEnquirer {
 						else {						
 							sequencia.add("sul");
 							mudou = true;
-							System.out.println("sul");
+							
 						}
-					}
+					
 				}
 			
 			/* Ve se encontrou a saÌda */
@@ -178,36 +182,43 @@ public class EnquirerMaze implements IEnquirer {
 			
 			if(!mudou) {				
 				
-				naoIr = sequencia.get(sequencia.size() - 1);
-				
-				if(naoIr.equals("norte")) {
-					coordenada.move("sul");
-					responder.move("sul");					
-				}
-				
-				if(naoIr.equals("leste")) {
+				if(sequencia.get(sequencia.size() - voltas - 1).equals("leste")) {
 					coordenada.move("oeste");
-					responder.move("oeste");					
+					responder.move("oeste");
+					sequencia.add("oeste");
 				}
 				
-				if(naoIr.equals("sul")) {
-					coordenada.move("norte");
-					responder.move("norte");					
+				else if(sequencia.get(sequencia.size() - voltas - 1).equals("norte")) {
+					coordenada.move("sul");
+					responder.move("sul");
+					sequencia.add("sul");
 				}
 				
-				if(naoIr.equals("oeste")) {
+				else if(sequencia.get(sequencia.size() - voltas - 1).equals("oeste")) {
 					coordenada.move("leste");
-					responder.move("leste");					
-				}					
-			}			
+					responder.move("leste");
+					sequencia.add("leste");
+				}
+				
+				else if(sequencia.get(sequencia.size() - voltas - 1).equals("sul")) {
+					coordenada.move("norte");
+					responder.move("norte");
+					sequencia.add("norte");
+				}
+				
+				voltas += 2;  
+			}
+			else
+				voltas = 0;
+		
 			
 			/* Se voltou para a entrada */
 			if(responder.ask("aqui").equals("entrada")) {
 				System.out.println("FuÈm fuÈm fuÈm!");
 				return true;			
 			}
-			System.out.println(naoIr);
-		
+			
+			
 		}	
 		
 		return true;
