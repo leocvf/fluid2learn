@@ -6,6 +6,7 @@ import java.util.Scanner;
 import pt.c02classes.s01knowledge.s01base.inter.IEnquirer;
 import pt.c02classes.s01knowledge.s01base.inter.IResponder;
 
+
 /* Define a coordenada partindo que a entrada do labirinto È o (0,0) */
 class Coordenada {
 	int longitude = 0;
@@ -104,7 +105,7 @@ public class EnquirerMaze implements IEnquirer {
 				}
 			}
 			
-			else			
+			if(!mudou)			
 			/* Ver se da pra ir pra cima */
 				if(responder.ask("norte").equals(" ")) {
 					responder.move("norte");
@@ -116,33 +117,32 @@ public class EnquirerMaze implements IEnquirer {
 						mudou = true;
 					}
 				}
-				else
-			
-					/* Ver se da pra ir pra esquerda */
-					if(responder.ask("oeste").equals(" ")) {
-						responder.move("oeste");
-						if(coordenada.testa(sequencia))
-							responder.move("leste");
-						else {
-							coordenada.move("oeste");
-							sequencia.add("oeste");
-							mudou = true;
-						}
+			if(!mudou)			
+				/* Ver se da pra ir pra esquerda */
+				if(responder.ask("oeste").equals(" ")) {
+					responder.move("oeste");
+					if(coordenada.testa(sequencia))
+						responder.move("leste");
+					else {
+						coordenada.move("oeste");
+						sequencia.add("oeste");
+						mudou = true;
 					}
+				}
 			
-					else			
-						/* Ver se da pra ir pra baixo */
-						if(responder.ask("sul").equals(" ")) {
-							responder.move("sul");
-							if(coordenada.testa(sequencia))
-								responder.move("norte");
-							else {
-								coordenada.move("sul");
-								sequencia.add("sul");
-								mudou = true;
-							}
-						}
-			
+			if(!mudou)			
+				/* Ver se da pra ir pra baixo */
+				if(responder.ask("sul").equals(" ")) {
+					responder.move("sul");
+					if(coordenada.testa(sequencia))
+						responder.move("norte");
+					else {
+						coordenada.move("sul");
+						sequencia.add("sul");
+						mudou = true;
+					}
+				}
+				
 			if(!mudou) {
 				System.out.println("FuÈm fuÈm fuÈm!");
 				return true;				
