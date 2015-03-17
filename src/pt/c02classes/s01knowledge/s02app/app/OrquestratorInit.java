@@ -1,9 +1,8 @@
 package pt.c02classes.s01knowledge.s02app.app;
+
 import java.util.Scanner;
 
-import pt.c02classes.s01knowledge.s02app.app.Orchestrator;
-import pt.c02classes.s01knowledge.s02app.app.OrchestratorInteractive;
-public class app {
+public class OrquestratorInit {
 	private static Scanner scanner;
 
 	public static void main(String args[])
