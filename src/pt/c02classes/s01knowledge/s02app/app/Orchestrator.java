@@ -11,7 +11,7 @@ import pt.c02classes.s01knowledge.s02app.actors.ResponderAnimals;
 
 public class Orchestrator
 {
-	public static void New()
+	public static void New(String ani)
 	{
 		IEnquirer enq;
 		IResponder resp;
@@ -20,15 +20,15 @@ public class Orchestrator
 		IBaseConhecimento base = new BaseConhecimento();
 
 		base.setScenario("animals");
-		String listaAnimais[] = base.listaNomes();
-        for (int animal = 0; animal < listaAnimais.length; animal++) {
-			System.out.println("Enquirer com " + listaAnimais[animal] + "...");
+
+			System.out.println("Enquirer com " + ani + "...");
 			stat = new Statistics();
-			resp = new ResponderAnimals(stat, listaAnimais[animal]);
+			resp = new ResponderAnimals(stat, ani);
 			enq = new EnquirerAnimals();
 			enq.connect(resp);
 			enq.discover();
 			System.out.println("----------------------------------------------------------------------------------------\n");
-        }		
+				
+        		
 	}
 }

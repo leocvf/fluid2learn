@@ -13,9 +13,13 @@ public class OrquestratorInit {
 		while (!tipo.equalsIgnoreCase("F")) {
 			   System.out.print("  --> ");
 			   switch (tipo.toUpperCase()) {
-			      case "A": Orchestrator.New();
+			      case "A": System.out.print("Qual animal?");
+			      			String animal = scanner.nextLine();
+			    	  		Orchestrator.New(animal);
 			                break;
-			      case "M": OrchestratorInteractive.New();
+			      case "M": System.out.print("Qual labirinto?");
+	      					String labirinto = scanner.nextLine();
+			    	  		OrchestratorInteractive.New(labirinto);
 			                break;
 			   }
 				System.out.print("(A)nimals, (M)aze ou (F)im? ");

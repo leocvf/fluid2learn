@@ -9,7 +9,7 @@ import pt.c02classes.s01knowledge.s02app.actors.ResponderMaze;
 
 public class OrchestratorInteractive
 {
-	public static void New()
+	public static void New(String arg)
 	{
 		IEnquirer enq;
 		IResponder resp;
@@ -17,7 +17,7 @@ public class OrchestratorInteractive
 		
 		System.out.println("Enquirer com Mordor...");
 		stat = new Statistics();
-		resp = new ResponderMaze(stat, "mordor");
+		resp = new ResponderMaze(stat, arg);
 		enq = new EnquirerMaze();
 		enq.connect(resp);
 		enq.discover();
